@@ -46,7 +46,7 @@ class EmpresaValor:
         if valor == '—':
             return None
         
-        valor = valor.replace('BRL','').replace('%','').replace(',','.').replace(' ', '').replace(' ','')
+        valor = valor.replace('BRL','').replace('%','').replace('.','').replace(',','.').replace(' ', '').replace(' ','')
         multiplicador = 1
 
         if 'K' in valor:
@@ -56,5 +56,5 @@ class EmpresaValor:
         elif 'B' in valor:
             multiplicador = 1000000000
     
-        valor = valor.replace('K','').replace('M','').replace('B','')
+        valor = valor.replace('K','').replace('M','').replace('B','').replace('\U00002013', '-').replace('\U00002212','-')
         return float(valor) * multiplicador

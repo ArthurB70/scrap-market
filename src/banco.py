@@ -12,7 +12,7 @@ class ConexaoBanco():
             f"UID={config.banco.user};"
             f"PWD={config.banco.password};"
         )
-        print(self.connection_string)
+
         self.timeout = config.timeout = float(config.banco.timeout)
         self.conexao = None
     

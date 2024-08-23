@@ -1,7 +1,7 @@
 from banco import ConexaoBanco
 from models.empresa import Empresa
 
-class SetorRepository:
+class EmpresaRepository:
     def __init__(self, config) -> None:
         self.banco = ConexaoBanco(config) 
         self.CarregarCache()
@@ -14,24 +14,51 @@ class SetorRepository:
             
             if(dt):
                 for linha in dt:
-                    self.setores.append(Empresa(id = linha[0], nome = linha[1], sigla = linha[2], url = linha[3], id_setor = linha[4]))
+                    self.empresas.append(Empresa(id = linha[0], nome = linha[1], sigla = linha[2], url = linha[3], id_setor = linha[4]))
             
             return True
         except:
             return False
     
-    def Inserir(self, empresa) -> bool:
+    def SelecionarPorId(self, id) -> Empresa:
+        try:
+            for empresa in self.empresas:
+                if(empresa.id == id):
+                    return empresa
+            return None
+        except:
+            return None
+    
+    def SelecionarPorNome(self, nome) -> Empresa:
+        try:
+            for empresa in self.empresas:
+                if(empresa.nome == nome):
+                    return empresa
+            return None
+        except:
+            return None
+        
+    def SelecionarPorSigla(self, sigla) -> Empresa:
+        try:
+            for empresa in self.empresas:
+                if(empresa.sigla == sigla):
+                    return empresa
+            return None
+        except:
+            return None
+    
+    def Inserir(self, empresa) -> Empresa:
         try:
             if not empresa:
-                return False
+                return None
             
             sql = f"INSERT INTO EMPRESA (NOME, SIGLA, URL, ID_SETOR) VALUES ('{empresa.nome}', '{empresa.sigla}', '{empresa.url}',{empresa.id_setor})"
             self.banco.ExecutarComando(sql, commit=True)
             self.CarregarCache()
 
-            return True
+            return self.SelecionarPorSigla(empresa.sigla)
         except:
-            return False
+            return None
     
     def Atualizar(self, empresa) -> bool:
         try:

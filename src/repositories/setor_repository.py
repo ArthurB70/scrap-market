@@ -20,18 +20,36 @@ class SetorRepository:
         except:
             return False
     
-    def Inserir(self, setor) -> bool:
+    def SelecionarPorId(self, id) -> Setor:
+        try:
+            for setor in self.setores:
+                if(setor.id == id):
+                    return setor
+            return None
+        except:
+            return None
+    
+    def SelecionarPorNome(self, nome) -> Setor:
+        try:
+            for setor in self.setores:
+                if(setor.nome == nome):
+                    return setor
+            return None
+        except:
+            return None
+            
+    def Inserir(self, setor) -> Setor:
         try:
             if not setor:
-                return False
+                return None
             
             sql = f"INSERT INTO SETOR (NOME) VALUES ('{setor.nome}')"
             self.banco.ExecutarComando(sql, commit=True)
             self.CarregarCache()
 
-            return True
+            return self.SelecionarPorNome(setor.nome)
         except:
-            return False
+            return None
     
     def Atualizar(self, setor) -> bool:
         try:
